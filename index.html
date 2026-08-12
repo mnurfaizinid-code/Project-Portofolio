@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Muhammad Nur Faizin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MNF</div>
+        <div class="menu"> 
+            <a href="#about">Tentang</a>
+            <a href="#skills">Keahlian</a>
+            <a href="#hobi">Hobi</a>
+            <a href="#contact">Kontak</a>
+        </div>
+        <button id="toggleTheme" type="button" aria-label="Ganti Tema">🌙</button>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <img src="My Foto.jpeg" alt="Foto profil" class="profile-pic">
+                <div class="hero-text">
+                    <h1>Muhammad Nur Faizin</h1>
+                    <h2>Prodi Informatika</h2>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="section-title-wrapper">
+                <h2 class="section-title">Tentang Saya</h2>
+            </div>
+            <div class="about-text">
+                <p>Kalo ditanya gw orang yang gimana? Kalo serius ya serius, kalo becanda? Hayu aja.</p>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2 class="section-title">Keahlian</h2>
+            <div id="skill-container" class="skill-list"></div>
+
+            <h2 class="section-title" style="margin-top: 24px;">Hobi</h2>
+            <div id="hobi-container" class="skill-list"></div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2 class="section-title">Kontak</h2>
+            <form id="formKontak">
+                <label for="namaInput" class="sr-only">Nama</label>
+                <input id="namaInput" type="text" placeholder="Masukkan Nama">
+                <button type="submit">Kirim</button>
+            </form>
+            <hr>
+            <a href="https://www.instagram.com/finch._.f/" class="btn" target="_blank" rel="noreferrer noopener">
+                <i class="fa-brands fa-instagram"></i> Instagram @finch._.f
+            </a>
+        </section>
+    </main>
+
+    <div id="proyek-container"></div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
