@@ -74,8 +74,11 @@ const container =
   document.querySelector('#proyek-container')
 
 proyek.forEach((item) => {
-  const card = document.createElement('div')
+  const card = document.createElement('a')
   card.className = 'project-card'
+  card.href = item.gambar_url
+  card.target = '_blank'
+  card.rel = 'noreferrer noopener'
   card.innerHTML = `
     <h3>${item.judul}</h3>
     <p>${item.deskripsi}</p>
