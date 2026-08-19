@@ -289,3 +289,19 @@ body.light-mode .btn {
 body.light-mode .project-card {
     background: #ffffff;
 }
+
+.project-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.project-card--text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+}
