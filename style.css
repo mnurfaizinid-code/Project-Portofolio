@@ -253,9 +253,16 @@ body.light-mode .btn {
 @media (max-width: 680px) {
     .navbar {
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
     }
 
+    .navbar .menu {
+        order: 3;
+        flex-basis: 100%;
+        justify-content: center;
+        margin-top: 8px;
+    }
+    
     .hero {
         padding: 32px 18px;
     }
