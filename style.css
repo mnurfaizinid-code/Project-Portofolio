@@ -277,10 +277,13 @@ body.light-mode .btn {
 }
 
 .project-card {
+    display: block;
     background: rgba(255, 255, 255, 0.06);
     padding: 20px;
     border-radius: 20px;
     margin-bottom: 16px;
+    text-decoration: none;
+    color: inherit;
 }
 
 body.light-mode .project-card {
