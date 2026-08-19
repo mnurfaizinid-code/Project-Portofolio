@@ -63,7 +63,7 @@ const { data: proyek, error } = await supabase
   .from('proyek') 
   .select('*')
   .order('created_at', { ascending: false })
-
+  
 if (error) {
   console.error('Gagal mengambil data:', error.message)
 } else {
@@ -74,16 +74,29 @@ const container =
   document.querySelector('#proyek-container')
 
 proyek.forEach((item) => {
-  const card = document.createElement('a')
-  card.className = 'project-card'
-  card.href = item.gambar_url
-  card.target = '_blank'
-  card.rel = 'noreferrer noopener'
-  card.innerHTML = `
-    <h3>${item.judul}</h3>
-    <p>${item.deskripsi}</p>
-  `
-  container.appendChild(card)
+  const isGambar = /\.(png|jpe?g|gif|webp|svg)$/i.test(item.gambar_url)
+
+  if (isGambar) {
+    const card = document.createElement('div')
+    card.className = 'project-card'
+    card.innerHTML = `
+      <img src="${item.gambar_url}" alt="${item.judul}" class="project-image">
+      <h3>${item.judul}</h3>
+      <p>${item.deskripsi}</p>
+    `
+    container.appendChild(card)
+  } else {
+     const card = document.createElement('a')
+    card.className = 'project-card project-card--text'
+    card.href = item.gambar_url
+    card.target = '_blank'
+    card.rel = 'noreferrer noopener'
+    card.innerHTML = `
+      <h3>${item.judul}</h3>
+      <p>${item.deskripsi}</p>
+    `
+    container.appendChild(card)
+  }
 })
 
-
+  
