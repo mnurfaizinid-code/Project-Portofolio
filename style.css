@@ -262,7 +262,7 @@ body.light-mode .btn {
         justify-content: center;
         margin-top: 8px;
     }
-    
+
     .hero {
         padding: 32px 18px;
     }
@@ -276,3 +276,13 @@ body.light-mode .btn {
     }
 }
 
+.project-card {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+body.light-mode .project-card {
+    background: #ffffff;
+}
