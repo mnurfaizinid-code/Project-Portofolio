@@ -3,7 +3,6 @@ const btn = document.querySelector("#toggleTheme");
 btn.addEventListener("click", () => {
     document.body.classList.toggle("light-mode");
 
-    // Ganti ikon tombol sesuai mode aktif
     const isLight = document.body.classList.contains("light-mode");
     btn.textContent = isLight ? "☀️" : "🌙";
 });
@@ -45,7 +44,8 @@ form.addEventListener('submit', async (e) => {
     .insert([{ nama: nama }]);
 
   if (error) {
-    alert('Gagal mengirim pesan');
+    alert('Gagal mengirim pesan: ' + error.message); 
+    console.error("Detail Error:", error);
   } else {
     alert('Pesan terkirim, ' + nama + '!');
     document.querySelector('#namaInput').value = ''; 
@@ -54,13 +54,13 @@ form.addEventListener('submit', async (e) => {
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const supabaseUrl = 'https://pfoyzrdvyejsbdwxqygp.supabase.com'
+const supabaseUrl = 'https://pfoyzrdvyejsbdwxqygp.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmb3l6cmR2eWVqc2Jkd3hxeWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0OTU5NzgsImV4cCI6MjEwMjA3MTk3OH0.szQb-wbImWzX5YhrNxPqjJUFJtu4opm8Wf7yWNmjosM'
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const { data: proyek, error } = await supabase
-  .from('proyek')
+  .from('proyek') 
   .select('*')
   .order('created_at', { ascending: false })
 
