@@ -99,4 +99,10 @@ proyek.forEach((item) => {
   }
 })
 
-  
+const submenuBtn = document.querySelector("#toggleSubmenu");
+const submenu = document.querySelector("#subMenu");
+
+submenuBtn.addEventListener("click", () => {
+    submenu.classList.toggle("open");
+    submenuBtn.classList.toggle("open");
+});
