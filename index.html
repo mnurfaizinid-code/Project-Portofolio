@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,66 +8,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://esm.sh;
+        style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+        font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+        img-src 'self' https: data:;
+        connect-src 'self' https://pfoyzrdvyejsbdwxqygp.supabase.co;">
 </head>
 <body>
     <nav class="navbar">
         <div class="logo">MNF</div>
-        <div class="menu"> 
-            <a href="#about">Tentang</a>
-            <a href="#skills">Keahlian</a>
-            <a href="#proyek">Proyek</a>
+        <div class="menu">
+            <a href="#home" data-nav="home" data-i18n="nav.about">Tentang</a>
+            <a href="#skills" data-nav="skills" data-i18n="nav.skills">Keahlian</a>
+            <a href="#proyek" data-nav="proyek" data-i18n="nav.projects">Proyek</a>
         </div>
 
         <div class="navbar-actions">
             <button id="toggleSubmenu" type="button" aria-label="Menu lainnya">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
+                    <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </button>
+            <button id="toggleLang" type="button" aria-label="Change language">EN</button>
             <button id="toggleTheme" type="button" aria-label="Ganti Tema">🌙</button>
         </div>
     </nav>
+
     <div id="subMenu" class="submenu">
-        <a href="#contact">Kontak</a>
-        <a href="#hubungi">Hubungi Saya</a>
+        <a href="#hobi" data-nav="hobi" data-i18n="nav.hobby">Hobi</a>
+        <a href="#contact" data-nav="contact" data-i18n="nav.contact">Kontak</a>
+        <a href="#hubungi" data-nav="hubungi" data-i18n="nav.message">Hubungi Saya</a>
     </div>
 
     <main>
-        <section class="hero" id="home">
-    <div class="hero-content">
-        <div class="img-box" id="openModal">
-            <div class="ring"></div>
-            <img src="My Foto.jpeg" alt="Foto profil" class="profile-pic">
-            <div class="hint">👆 Tap untuk memperbesar</div>
-            </div>
-                <div class="hero-text">
-                    <h1>Muhammad Nur Faizin</h1>
-                    <h2>Prodi Informatika</h2>
+        <!-- MENU 1: HOME (foto, nama, tentang, AI assistant) -->
+        <div id="home" class="view">
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="img-box" id="openModal">
+                        <div class="ring"></div>
+                        <img src="My Foto.jpeg" alt="Foto profil" class="profile-pic">
+                        <div class="hint" data-i18n="hero.hint">👆 Tap untuk memperbesar</div>
+                    </div>
+                    <div class="hero-text">
+                        <h1>Muhammad Nur Faizin</h1>
+                        <h2 data-i18n="hero.major">Prodi Informatika</h2>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="about" class="section">
-            <div class="section-title-wrapper">
-                <h2 class="section-title">Tentang Saya</h2>
-            </div>
-            <div class="about-text">
-                <p>Kalo ditanya gw orang yang gimana? Kalo serius ya serius, kalo becanda? Hayu aja.</p>
-            </div>
-        </section>
+            <div class="home-grid">
+                <section id="about" class="section">
+                    <h2 class="section-title" data-i18n="about.title">Tentang Saya</h2>
+                    <div class="about-text">
+                        <p data-i18n="about.text">Kalo ditanya gw orang yang gimana? Kalo serius ya serius, kalo becanda? Hayu aja.</p>
+                    </div>
+                </section>
 
-        <section id="skills" class="section">
-            <h2 class="section-title">Keahlian</h2>
+                <section id="assistant" class="section">
+                    <h2 class="section-title" data-i18n="ai.title">AI Assistant</h2>
+                    <div class="contact-card">
+                        <div id="aiReply" class="ai-reply" aria-live="polite"></div>
+                        <form id="formAI">
+                            <label for="aiInput" class="sr-only" data-i18n="ai.label">Cari menu</label>
+                            <input id="aiInput" type="text" maxlength="100" data-i18n-placeholder="ai.placeholder" placeholder="Cari menu...">
+                            <button type="submit" data-i18n="ai.send">Cari Menu 🔎</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- MENU 2 -->
+        <section id="skills" class="section view">
+            <h2 class="section-title" data-i18n="skills.title">Keahlian</h2>
             <div id="skill-container" class="skill-list"></div>
         </section>
 
-        <section id="hobi" class="section">
-            <h2 class="section-title">Hobi</h2>
+        <!-- MENU 3 -->
+        <section id="proyek" class="section view">
+            <h2 class="section-title" data-i18n="projects.title">Proyek</h2>
+            <div id="proyek-container" class="skill-list"></div>
+        </section>
+
+        <!-- SUBMENU -->
+        <section id="hobi" class="section view">
+            <h2 class="section-title" data-i18n="hobby.title">Hobi</h2>
             <div id="hobi-container" class="skill-list"></div>
         </section>
 
-        <section id="contact" class="section">
-            <h2 class="section-title">Kontak</h2>
+        <section id="contact" class="section view">
+            <h2 class="section-title" data-i18n="contact.title">Kontak</h2>
             <div class="contact-links">
                 <a href="https://www.instagram.com/finch._.f/" class="btn btn-ig" target="_blank" rel="noreferrer noopener">
                     <i class="fa-brands fa-instagram"></i> Instagram @finch._.f
@@ -78,33 +111,29 @@
             </div>
         </section>
 
-        <section id="proyek" class="section">
-            <h2 class="section-title">Proyek</h2>
-            <div id="proyek-container" class="skill-list"></div>
-        </section>
-
-        <section id="hubungi" class="section">
+        <section id="hubungi" class="section view">
             <div class="contact-card">
-                <div class="contact-label">Hubungi Saya</div>
+                <div class="contact-label" data-i18n="form.label">Hubungi Saya</div>
                 <form id="formKontak">
-                    <label for="namaInput" class="sr-only">Nama</label>
-                    <input id="namaInput" type="text" placeholder="Nama">
-                    <label for="emailInput" class="sr-only">Email</label>
-                    <input id="emailInput" type="email" placeholder="Email">
-                    <label for="pesanInput" class="sr-only">Pesan</label>
-                    <textarea id="pesanInput" rows="4" placeholder="Pesan..."></textarea>
-                    <button type="submit">Kirim Pesan 🚀</button>
+                    <label for="namaInput" class="sr-only" data-i18n="form.name">Nama</label>
+                    <input id="namaInput" type="text" maxlength="100" data-i18n-placeholder="form.name" placeholder="Nama">
+                    <label for="emailInput" class="sr-only" data-i18n="form.email">Email</label>
+                    <input id="emailInput" type="email" data-i18n-placeholder="form.email" placeholder="Email">
+                    <label for="pesanInput" class="sr-only" data-i18n="form.messageLabel">Pesan</label>
+                    <textarea id="pesanInput" rows="4" maxlength="2000" data-i18n-placeholder="form.messagePh" placeholder="Pesan..."></textarea>
+                    <button type="submit" data-i18n="form.send">Kirim Pesan 🚀</button>
                 </form>
                 <div id="formMsg" class="form-msg"></div>
             </div>
         </section>
-
     </main>
 
-        <div class="modal" id="modal">
-            <img src="My Foto.jpeg" alt="Foto diperbesar">
-        </div>
+    <div class="modal" id="modal">
+        <img src="My Foto.jpeg" alt="Foto diperbesar">
+    </div>
 
+    <script type="module" src="nav.js"></script>
     <script type="module" src="script.js"></script>
+    <script type="module" src="ai.js"></script>
 </body>
 </html>

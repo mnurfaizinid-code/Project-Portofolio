@@ -662,3 +662,69 @@ body.light-mode .contact-card textarea::placeholder {
 .contact-card button[type="submit"] {
     width: 100%;
 }
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: block;
+    animation: viewFade 0.3s ease;
+}
+
+@keyframes viewFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.navbar .menu a.current,
+.submenu a.current,
+body.light-mode .navbar .menu a.current,
+body.light-mode .submenu a.current {
+    background-color: #6c63ff;
+    color: #ffffff;
+}
+
+/* ===== Home: kotak Tentang + AI Assistant setengah-setengah ===== */
+.home-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 32px;
+}
+
+.home-grid .section {
+    margin-top: 0;
+}
+
+@media (max-width: 680px) {
+    .home-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ai-reply {
+    min-height: 80px;
+    margin-bottom: 8px;
+}
+
+.ai-reply p {
+    margin: 0 0 10px;
+}
+
+#toggleLang {
+    border: none;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    font-family: inherit;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+#toggleLang:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+}
