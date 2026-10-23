@@ -8,6 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' https://esm.sh https://cdn.jsdelivr.net 'wasm-unsafe-eval';
+        style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+        font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+        img-src 'self' https: data:;
+        worker-src 'self' blob:;
+        connect-src 'self' https://pfoyzrdvyejsbdwxqygp.supabase.co https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co https://*.hf.co;">
 </head>
 <body>
     <nav class="navbar">
@@ -83,6 +91,19 @@
             <div id="proyek-container" class="skill-list"></div>
         </section>
 
+        <section id="ai" class="section">
+            <h2 class="section-title">Coba AI</h2>
+            <div class="contact-card">
+                <div class="contact-label">Analisis Sentimen (bahasa Inggris)</div>
+                <form id="formAI">
+                    <label for="aiInput" class="sr-only">Kalimat</label>
+                    <input id="aiInput" type="text" maxlength="200" placeholder="Contoh: I love this portfolio!">
+                    <button type="submit">Analisis 🤖</button>
+                </form>
+                <div id="aiMsg" class="form-msg"></div>
+            </div>
+        </section>
+
         <section id="hubungi" class="section">
             <div class="contact-card">
                 <div class="contact-label">Hubungi Saya</div>
@@ -106,5 +127,6 @@
         </div>
 
     <script type="module" src="script.js"></script>
+    <script type="module" src="ai.js"></script>
 </body>
 </html>
