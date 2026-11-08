@@ -1,17 +1,15 @@
 import { showView } from './nav.js';
 import { t, getLang, onLangChange } from './Bahasa.js';
-import { SYSTEM_PROMPT } from './knowledge.js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// true  = menu langsung terbuka otomatis
-// false = tampilkan tombol "Buka ..." dulu (lebih nyaman, jawabannya tetap terlihat)
+const supabaseUrl = 'https://pfoyzrdvyejsbdwxqygp.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmb3l6cmR2eWVqc2Jkd3hxeWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0OTU5NzgsImV4cCI6MjEwMjA3MTk3OH0.szQb-wbImWzX5YhrNxPqjJUFJtu4opm8Wf7yWNmjosM';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 const AUTO_OPEN = false;
 const MAX_LEN = 100;
 
-// Masukkan Gemini API Key kamu di sini
-const GEMINI_API_KEY = "AQ.Ab8RN6Lmw6E9UF0-uQOA1DHxFbo6-jMLrTZ8GHcfWC2h9kBk5g"; // Key dari screenshot terbaru
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-// Daftar menu yang boleh dituju. keywords = kata kunci kuat (bobot 2), weak = kata umum (bobot 1)
+// Daftar menu (lengkap dengan kata slang 'ngontak')
 const ROUTES = [
   { id: 'home', nameKey: 'nav.about',
     keywords: ['siapa', 'who', 'profil', 'profile', 'home', 'beranda', 'foto', 'photo', 'diri', 'yourself', 'intro', 'kenalan'],
@@ -26,7 +24,7 @@ const ROUTES = [
     keywords: ['proyek', 'project', 'karya', 'portfolio', 'portofolio', 'desain', 'design'],
     weak: ['work', 'kerja'] },
   { id: 'contact', nameKey: 'nav.contact',
-    keywords: ['kontak', 'contact', 'instagram', 'ig', 'whatsapp', 'wa', 'sosmed', 'social', 'nomor', 'number', 'telepon', 'phone'],
+    keywords: ['kontak', 'contact', 'ngontak', 'instagram', 'ig', 'whatsapp', 'wa', 'sosmed', 'social', 'nomor', 'number', 'telepon', 'phone'],
     weak: [] },
   { id: 'hubungi', nameKey: 'nav.message',
     keywords: ['hubungi', 'pesan', 'message', 'kirim', 'send', 'email', 'surel', 'feedback', 'saran'],
@@ -68,7 +66,6 @@ function findRoute(text) {
       bestScore = score;
     }
   }
-  // Hanya kembalikan route jika skor mencukupi (minimal 2)
   return bestScore >= 2 ? best : null;
 }
 
@@ -90,39 +87,19 @@ function showReply(text, route, isLoading = false) {
   }
 }
 
-// Fungsi Fetch ke Gemini API
-async function askGemini(userQuery) {
+// Memanggil Supabase Edge Function
+async function askSupabaseAI(userQuery) {
   const currentLang = getLang() === 'en' ? 'English' : 'Indonesian';
   
-  const payload = {
-    contents: [
-      {
-        role: "user",
-        parts: [
-          { text: `${SYSTEM_PROMPT}\n\nUser Question (${currentLang}): ${userQuery}` }
-        ]
-      }
-    ]
-  };
-
   try {
-    const res = await fetch(GEMINI_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+    const { data, error } = await supabase.functions.invoke('ask-ai', {
+      body: { prompt: userQuery, lang: currentLang }
     });
 
-    const data = await res.json();
-
-    // Jika Google mengembalikan eror (misal kuota/permission), cetak di console
-    if (!res.ok) {
-      console.error('Google API Error Response:', data);
-      throw new Error(data.error?.message || 'API Error');
-    }
-    
-    return data.candidates[0].content.parts[0].text;
+    if (error) throw error;
+    return data.text;
   } catch (err) {
-    console.error('Gemini Fetch Error:', err);
+    console.error('Supabase AI Function Error:', err);
     return getLang() === 'en' 
       ? "Sorry, I'm having trouble connecting to my AI brain right now."
       : "Maaf, sepertinya ada kendala koneksi ke otak AI saat ini.";
@@ -138,7 +115,6 @@ formAI.addEventListener('submit', async (e) => {
     return;
   }
 
-  // 1. Cek apakah pengguna hanya bermaksud navigasi menu
   const route = findRoute(text);
   if (route) {
     if (AUTO_OPEN) {
@@ -150,11 +126,10 @@ formAI.addEventListener('submit', async (e) => {
     return;
   }
 
-  // 2. Jika bukan navigasi kaku, panggil Gemini AI untuk menjawab pertanyaan
   const loadingText = getLang() === 'en' ? '⏳ Thinking...' : '⏳ Sedang berpikir...';
   showReply(loadingText, null, true);
 
-  const aiAnswer = await askGemini(text);
+  const aiAnswer = await askSupabaseAI(text);
   showReply(aiAnswer, null);
   aiInput.value = '';
 });
