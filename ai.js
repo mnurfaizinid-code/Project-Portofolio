@@ -8,8 +8,8 @@ const AUTO_OPEN = false;
 const MAX_LEN = 100;
 
 // Masukkan Gemini API Key kamu di sini
-const GEMINI_API_KEY = "AQ.Ab8RN6L3l-PkWm8X4pZP7wWfTxnktaHGNvGZw8xLRhNngLf67g"; 
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+const GEMINI_API_KEY = "AQ.Ab8RN6Lmw6E9UF0-uQOA1DHxFbo6-jMLrTZ8GHcfWC2h9kBk5g"; // Key dari screenshot terbaru
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // Daftar menu yang boleh dituju. keywords = kata kunci kuat (bobot 2), weak = kata umum (bobot 1)
 const ROUTES = [
@@ -112,8 +112,13 @@ async function askGemini(userQuery) {
       body: JSON.stringify(payload)
     });
 
-    if (!res.ok) throw new Error('API Error');
     const data = await res.json();
+
+    // Jika Google mengembalikan eror (misal kuota/permission), cetak di console
+    if (!res.ok) {
+      console.error('Google API Error Response:', data);
+      throw new Error(data.error?.message || 'API Error');
+    }
     
     return data.candidates[0].content.parts[0].text;
   } catch (err) {
