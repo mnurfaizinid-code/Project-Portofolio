@@ -1,3 +1,6 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { t, onLangChange } from './Bahasa.js'
+
 const btn = document.querySelector("#toggleTheme");
 
 btn.addEventListener("click", () => {
@@ -17,15 +20,21 @@ skills.forEach((skill) => {
     skillContainer.appendChild(badge);
 });
 
-const hobi = ["Baca", "Mengetik", "Berpikir"];
+const hobiKeys = ["hobby.read", "hobby.type", "hobby.think"];
 const hobiContainer = document.querySelector("#hobi-container");
 
-hobi.forEach((item) => {
-    const badge = document.createElement("span");
-    badge.className = "skill-badge";
-    badge.textContent = item;
-    hobiContainer.appendChild(badge);
-});
+function renderHobi() {
+    hobiContainer.replaceChildren();
+    hobiKeys.forEach((key) => {
+        const badge = document.createElement("span");
+        badge.className = "skill-badge";
+        badge.textContent = t(key);
+        hobiContainer.appendChild(badge);
+    });
+}
+
+renderHobi();
+onLangChange(renderHobi);
 
 const form = document.querySelector("#formKontak");
 const namaInput = document.querySelector("#namaInput");
@@ -45,26 +54,24 @@ form.addEventListener('submit', async (e) => {
   const pesan = pesanInput.value.trim();
 
   if (nama === '' || pesan === '') {
-    showFormMsg('⚠️ Nama dan pesan wajib diisi!', 'error');
+    showFormMsg(t('form.required'), 'error');
     return;
   }
 
-  showFormMsg('⏳ Mengirim...', 'loading');
+  showFormMsg(t('form.sending'), 'loading');
 
   const { error } = await supabase
-    .from('pesan') 
+    .from('pesan')
     .insert([{ nama: nama, email: email, pesan: pesan }]);
 
   if (error) {
-    showFormMsg('❌ Gagal mengirim pesan, coba lagi nanti.', 'error');
+    showFormMsg(t('form.fail'), 'error');
     console.error(error);
   } else {
-    showFormMsg('✔ Pesan terkirim, ' + nama + '!', 'success');
+    showFormMsg(t('form.ok', { name: nama }), 'success');
     form.reset();
   }
 });
-
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const supabaseUrl = 'https://pfoyzrdvyejsbdwxqygp.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmb3l6cmR2eWVqc2Jkd3hxeWdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY0OTU5NzgsImV4cCI6MjEwMjA3MTk3OH0.szQb-wbImWzX5YhrNxPqjJUFJtu4opm8Wf7yWNmjosM'
@@ -72,14 +79,14 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 const { data: proyek, error } = await supabase
-  .from('proyek') 
+  .from('proyek')
   .select('*')
   .order('created_at', { ascending: false })
-  
+
 if (error) {
   console.error('Gagal mengambil data:', error.message)
 } else {
-  console.log(proyek)   
+  console.log(proyek)
 }
 
 function isSafeUrl(url) {
@@ -139,4 +146,3 @@ openModalBtn.addEventListener("click", () => {
 modal.addEventListener("click", () => {
     modal.classList.remove("open");
 });
-
